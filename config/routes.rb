@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'users/new'
 
   root 'static_pages#home'
   get 'help'    => 'static_pages#help'      # help_path (the first section)
@@ -7,11 +6,40 @@ Rails.application.routes.draw do
   get 'contact' => 'static_pages#contact'   # contact_path
   get 'signup' => 'users#new'               # signup_path
 
+  get    'login'   => 'sessions#new'
+  post   'login'   => 'sessions#create'
+  delete 'logout'  => 'sessions#destroy'
+
   resources :users
+end
+
+
   # get  'static_pages/help'
   # get  'static_pages/about'
   # get  'static_pages/contact'
-end
+  # get 'sessions/new'
+  # get 'users/new'
+  #
+  # Prefix Verb   URI Pattern               Controller#Action
+  # ============  =======================   ====================
+  # root GET      /                         static_pages#home
+  # help GET      /help(.:format)           static_pages#help
+  # about GET     /about(.:format)          static_pages#about
+  # contact GET   /contact(.:format)        static_pages#contact
+  # signup GET    /signup(.:format)         users#new
+  # login GET     /login(.:format)          sessions#new
+  # POST          /login(.:format)          sessions#create
+  # logout DELETE /logout(.:format)         sessions#destroy
+  # users GET     /users(.:format)          users#index
+  # POST          /users(.:format)          users#create
+  # new_user GET  /users/new(.:format)      users#new
+  # edit_user GET /users/:id/edit(.:format) users#edit
+  # user GET      /users/:id(.:format)      users#show
+  # PATCH         /users/:id(.:format)      users#update
+  # PUT           /users/:id(.:format)      users#update
+  # DELETE        /users/:id(.:format)      users#destroy
+
+
 
 
 
