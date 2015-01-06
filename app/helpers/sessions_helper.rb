@@ -23,6 +23,18 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  # Remembers a user in a persistent session.
+  def remember(user)
+    user.remember
+    cookies.permanent.signed[:user_id] = user.id
+    cookies.permanent[:remember_token] = user.remember_token
+  end
+
+  # Returns true if the given user is the current user.
+  def current_user?(user)
+    user == current_user
+  end
+
   # Forgets a persistent session.
   def forget(user)
     user.forget
@@ -41,6 +53,17 @@ module SessionsHelper
     user.remember  # here we define a remember method that calls user.remember
     cookies.permanent.signed[:user_id] = user.id   # thereby generating a remember token and saving its digest to the database
     cookies.permanent[:remember_token] = user.remember_token  # It then uses cookies to create permanent cookies for the user id and remember token as described above
+  end
+
+  # Redirects to stored location (or to the default).
+  def redirect_back_or(default)
+    redirect_to(session[:forwarding_url] || default)
+    session.delete(:forwarding_url)
+  end
+
+  # Stores the URL trying to be accessed.
+  def store_location
+    session[:forwarding_url] = request.url if request.get?
   end
 
   # Returns the user corresponding to the remember token cookie.
